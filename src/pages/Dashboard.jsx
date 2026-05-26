@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
+import { showApiError, confirmCancelReservation, showDeletedAlert } from '../helpers/alerts';
 import { getUser, logout } from '../helpers/local-storage';
 import { getReservations, createReservation, updateReservation, patchReservation, deleteReservation } from '../services/Api';
 import Navbar from '../components/NavBar';
@@ -13,7 +13,7 @@ export default function Dashboard() {
     const user = getUser();
     const [items, setItems] = useState([]), [loading, setLoading] = useState(true), [filter, setFilter] = useState('all'), [selected, setSelected] = useState(null);
 
-    const load = async () => { try { setLoading(true); const { data } = await getReservations(); setItems(data); } catch (e) { await Swal.fire('Error de API', '', 'error'); } finally { setLoading(false); } };
+    const load = async () => { try { setLoading(true); const { data } = await getReservations(); setItems(data); } catch (e) { await showApiError(); } finally { setLoading(false); } };
     useEffect(() => { load() }, []);
 
     const save = async (form) => {
@@ -22,7 +22,7 @@ export default function Dashboard() {
         setSelected(null); load();
     };
     const finish = async (id) => { await patchReservation(id, { estado: STATUS.FINISHED }); load(); };
-    const remove = async (id) => { const r = await Swal.fire({ title: '¿Estás seguro de cancelar esta reserva?', showCancelButton: true }); if (r.isConfirmed) { await deleteReservation(id); await Swal.fire('Eliminada', '', 'success'); load(); } };
+    const remove = async (id) => { const r = await confirmCancelReservation(); if (r.isConfirmed) { await deleteReservation(id); await showDeletedAlert(); load(); } };
 
     const filtered = items.filter(x => filter === 'all' ? true : x.estado === filter);
 
