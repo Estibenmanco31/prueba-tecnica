@@ -1,0 +1,1 @@
+export default () => <div className='text-center p-8'>Cargando...</div>;
