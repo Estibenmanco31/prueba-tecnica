@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../hooks/useAuth';
+import { login } from '../helpers/local-storage';
 export default function Login() {
     const [nombre, setNombre] = useState(''); const [turno, setTurno] = useState('Mañana'); const nav = useNavigate();
     const submit = e => { e.preventDefault(); login({ nombre, turno }); nav('/panel'); };
