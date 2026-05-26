@@ -8,3 +8,9 @@ export const confirmCancelReservation = () => Swal.fire({
 });
 
 export const showDeletedAlert = () => Swal.fire('Eliminada', '', 'success');
+
+export const showFinishedAlert = () => Swal.fire('Finalizada', 'La reserva ha sido finalizada', 'success');
+
+export const showUpdatedAlert = () => Swal.fire('Actualizada', 'La reserva ha sido modificada con éxito', 'success');
+
+export const showCreatedAlert = () => Swal.fire('Creada', 'La reserva ha sido registrada con éxito', 'success');
